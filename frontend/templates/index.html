@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>GSP CEMS by Shawn</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <div class="eyebrow">岡山垃圾焚化廠</div>
+        <h1>GSP CEMS by Shawn</h1>
+        <p id="statusText">準備載入資料...</p>
+        <div class="live-line">
+          <span id="liveDot" class="live-dot off"></span>
+          <span id="liveText">LIVE 尚未啟動</span>
+          <span id="nextText"></span>
+        </div>
+      </div>
+      <button id="refreshBtn" class="primary-btn">更新</button>
+    </header>
+
+    <section class="control-card">
+      <div class="live-primary-row">
+        <button id="liveBtn" class="chip live-toggle">啟動 LIVE</button>
+      </div>
+      <div class="control-grid">
+        <div class="control-field">
+          <label for="dateInput">資料日期</label>
+          <div class="date-input-wrap"><input id="dateInput" type="date" /></div>
+        </div>
+        <div class="control-field">
+          <label for="intervalSelect">更新頻率</label>
+          <select id="intervalSelect">
+            <option value="60">60 秒</option>
+            <option value="180">3 分鐘</option>
+            <option value="300" selected>5 分鐘</option>
+            <option value="600">10 分鐘</option>
+          </select>
+        </div>
+      </div>
+      <p class="hint manual-refresh-hint">選擇過去日期後，請點右上角「更新」並等待查詢完成。</p>
+    </section>
+
+    <section class="section-card exceed-card">
+      <div class="section-title">
+        <h2>超排次數統計</h2>
+        <span id="cacheInfo">--</span>
+      </div>
+      <p class="hint exceed-hint">統計邏輯：SO₂、NOx、CO、HCl 以每小時四筆 15 分鐘數值平均判定；平均值大於標準值時計為 1 次。例：00:15、00:30、00:45、01:00 平均大於標準，計 1 次。</p>
+      <div class="table-wrap compact-wrap">
+        <table class="exceed-table">
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>P101</th>
+              <th>P201</th>
+              <th>P301</th>
+            </tr>
+          </thead>
+          <tbody id="exceedBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="section-title">
+        <h2>三爐最新有效值</h2>
+        <span id="latestTime">--</span>
+      </div>
+      <div class="table-wrap compact-wrap latest-wrap">
+        <table class="latest-table">
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>P101</th>
+              <th>P201</th>
+              <th>P301</th>
+            </tr>
+          </thead>
+          <tbody id="latestBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="section-title">
+        <h2>24 小時移動趨勢圖</h2>
+        <span>三爐趨勢比較</span>
+      </div>
+      <div id="charts"></div>
+    </section>
+  </main>
+  <script>
+    window.INITIAL_TODAY = "{{ today }}";
+    window.POLLUTANTS = {{ pollutants|tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
