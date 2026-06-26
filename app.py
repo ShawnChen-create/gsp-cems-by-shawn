@@ -242,6 +242,22 @@ def api_cems():
         "plant_code": PLANT_CODE,
     })
 
+@app.route("/api/test")
+def api_test():
+    try:
+        rows, meta = fetch_cems("2026/06/26", "P101")
+        return jsonify({
+            "ok": True,
+            "meta": meta,
+            "sample_count": len(rows),
+            "first_row": rows[0] if rows else None,
+            "last_row": rows[-1] if rows else None
+        })
+    except Exception as e:
+        return jsonify({
+            "ok": False,
+            "error": str(e)
+        }), 500
 
 @app.route("/healthz")
 def healthz():
