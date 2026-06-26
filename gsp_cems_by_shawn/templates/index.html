@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{{ app_name }}</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">岡山廠｜CEMS 行動查詢</p>
+        <h1>GSP CEMS <span>by Shawn</span></h1>
+      </div>
+      <div class="status" id="statusDot">待查詢</div>
+    </header>
+
+    <section class="panel query-panel">
+      <label>開始日期
+        <input id="startDate" type="date" />
+      </label>
+      <label>結束日期
+        <input id="endDate" type="date" />
+      </label>
+      <div class="chips" aria-label="排放口">
+        <label><input type="checkbox" name="port" value="P101" checked /> P101</label>
+        <label><input type="checkbox" name="port" value="P201" checked /> P201</label>
+        <label><input type="checkbox" name="port" value="P301" checked /> P301</label>
+      </div>
+      <label>監測項目
+        <select id="pollutant">
+          <option value="NOx">NOx</option>
+          <option value="HCl">HCl</option>
+          <option value="CO">CO</option>
+          <option value="SO2">SO₂</option>
+          <option value="O2">O₂</option>
+          <option value="TEMP">溫度</option>
+          <option value="FLOW">流率</option>
+        </select>
+      </label>
+      <button id="queryBtn">查詢 CEMS</button>
+    </section>
+
+    <section class="cards" id="cards"></section>
+
+    <section class="panel chart-panel">
+      <div class="section-title">
+        <h2>趨勢圖</h2>
+        <button class="ghost" id="downloadCsv">CSV</button>
+      </div>
+      <canvas id="trendChart" height="240"></canvas>
+    </section>
+
+    <section class="panel">
+      <div class="section-title"><h2>查詢訊息</h2></div>
+      <div id="message" class="message">請選擇日期與排放口後查詢。</div>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
